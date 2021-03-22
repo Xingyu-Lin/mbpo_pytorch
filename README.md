@@ -5,7 +5,7 @@ This code is based on a [previous paper in the NeurIPS reproducibility challenge
 This code re-implemented the ensemble dynamics model with pytorch and closes the gap. 
 
 ## Reproduced results
-
+![alt text](./results/hopper.png) ![alt text](./results/walker2d.png)
 ## Dependencies
 
 MuJoCo 1.5 & MuJoCo 2.0
