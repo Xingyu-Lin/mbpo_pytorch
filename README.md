@@ -5,6 +5,7 @@ This code is based on a [previous paper in the NeurIPS reproducibility challenge
 This code re-implements the ensemble dynamics model with pytorch and closes the gap. 
 
 ## Reproduced results
+The comparison are done on two tasks while other tasks are not tested. But on the tested two tasks, the pytorch implementation achieves similar performance compared to the official tensorflow code.
 ![alt text](./results/hopper.png) ![alt text](./results/walker2d.png)
 ## Dependencies
 
