@@ -13,6 +13,7 @@ MuJoCo 1.5 & MuJoCo 2.0
 
 ## Usage
 > python main_mbpo.py --env_name 'Walker2d-v2' --num_epoch 300 --model_type 'pytorch'
+
 > python main_mbpo.py --env_name 'Hopper-v2' --num_epoch 300 --model_type 'pytorch'
 
 ## Reference
