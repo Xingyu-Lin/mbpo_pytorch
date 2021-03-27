@@ -11,8 +11,6 @@ import os
 import os.path as osp
 import json
 
-import utils
-
 from sac.replay_memory import ReplayMemory
 from sac.sac import SAC
 from model import EnsembleDynamicsModel
@@ -234,23 +232,6 @@ def train_policy_repeats(args, total_step, train_step, cur_step, env_pool, model
         agent.update_parameters((batch_state, batch_action, batch_reward, batch_next_state, batch_done), args.policy_train_batch_size, i)
 
     return args.num_train_repeat
-
-
-def make_env(vv, env_names=None):
-    if env_names is None:
-        env_names = []
-        morphologies = ['walker', 'hopper', 'cheetah']
-        for morphology in morphologies:
-            env_names += [name[:-4] for name in os.listdir(vv['xml_dir']) if '.xml' in name and morphology in name]
-    elif len(env_names) == 0:
-        return [], []
-    env_names = list(dict.fromkeys(env_names))
-    limb_obs_size, max_action = utils.registerEnvs(env_names, 250, None)
-    envs = []
-    for env_name in env_names:
-        env = utils.makeEnvWrapper(env_name, seed=100, obs_max_len=None)()
-        envs.append(env)
-    return envs, env_names
 
 
 from gym.spaces import Box
