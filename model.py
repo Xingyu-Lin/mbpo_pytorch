@@ -245,7 +245,7 @@ class EnsembleDynamicsModel():
                 break_train = self._save_best(epoch, holdout_mse_losses)
                 if break_train:
                     break
-            print('epoch: {}, holdout mse losses: {}'.format(epoch, holdout_mse_losses))
+            # print('epoch: {}, holdout mse losses: {}'.format(epoch, holdout_mse_losses))
 
     def _save_best(self, epoch, holdout_losses):
         updated = False
