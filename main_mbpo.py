@@ -91,6 +91,9 @@ def readParser():
                         help='batch size for training policy')
     parser.add_argument('--init_exploration_steps', type=int, default=5000, metavar='A',
                         help='exploration steps initially')
+    parser.add_argument('--max_path_length', type=int, default=1000, metavar='A',
+                        help='max length of path')
+
 
     parser.add_argument('--model_type', default='tensorflow', metavar='A',
                         help='predict model -- pytorch or tensorflow')
@@ -112,7 +115,7 @@ def train(args, env_sampler, predict_env, agent, env_pool, model_pool):
         for i in count():
             cur_step = total_step - start_step
 
-            if cur_step >= start_step + args.epoch_length and len(env_pool) > args.min_pool_size:
+            if cur_step >= args.epoch_length and len(env_pool) > args.min_pool_size:
                 break
 
             if cur_step > 0 and cur_step % args.model_train_freq == 0 and args.real_ratio < 1.0:
@@ -133,7 +136,7 @@ def train(args, env_sampler, predict_env, agent, env_pool, model_pool):
 
             total_step += 1
 
-            if total_step % 1000 == 0:
+            if total_step % args.epoch_length == 0:
                 '''
                 avg_reward_len = min(len(env_sampler.path_rewards), 5)
                 avg_reward = sum(env_sampler.path_rewards[-avg_reward_len:]) / avg_reward_len
@@ -143,9 +146,12 @@ def train(args, env_sampler, predict_env, agent, env_pool, model_pool):
                 env_sampler.current_state = None
                 sum_reward = 0
                 done = False
-                while not done:
+                test_step = 0
+
+                while (not done) and (test_step != args.max_path_length):
                     cur_state, action, next_state, reward, done, info = env_sampler.sample(agent, eval_t=True)
                     sum_reward += reward
+                    test_step += 1
                 # logger.record_tabular("total_step", total_step)
                 # logger.record_tabular("sum_reward", sum_reward)
                 # logger.dump_tabular()
@@ -295,7 +301,7 @@ def main(args=None):
     model_pool = ReplayMemory(new_pool_size)
 
     # Sampler of environment
-    env_sampler = EnvSampler(env)
+    env_sampler = EnvSampler(env, max_path_length=args.max_path_length)
 
     train(args, env_sampler, predict_env, agent, env_pool, model_pool)
 
